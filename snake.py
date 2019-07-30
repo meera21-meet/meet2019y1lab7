@@ -63,22 +63,22 @@ def remove_tail():
 def up():
     snake.direction = 'Up'
     print ("you pressed the up key!")
-    move_snake()
+   
     
 def down():
     snake.direction = 'Down'
     print ("you pressed the down key!")
-    move_snake()
+    
     
 def left():
     snake.direction ='Left'
     print ("you pressed the left key!")
-    move_snake()
+    
     
 def right():
     snake.direction ='Right'
     print ("you pressed the right key!")
-    move_snake()
+    
 
 turtle.onkeypress(up, "Up")
 turtle.onkeypress(down, "Down")
@@ -98,6 +98,21 @@ for this_food_pos in food_pos :
     food.goto(this_food_pos)
     f=food.stamp()
     food_stamps.append(f)
+turtle.hideturtle()
+
+def make_food():
+    min_x=-int(SIZE_X/2/SQUARE_SIZE)+1
+    max_x=int(SIZE_X/2/SQUARE_SIZE)-1
+    min_y=-int(SIZE_Y/2/SQUARE_SIZE)+1
+    max_y=int(SIZE_Y/2/SQUARE_SIZE)-1
+
+    food_x = random.randint(min_x,max_x)*SQUARE_SIZE
+    food_y = random.randint(min_y,max_y)*SQUARE_SIZE
+
+    food.goto(food_x,food_y)
+    food_pos.append(food.pos())
+    p=food.stamp()
+    food_stamps.append(p)
        
 
 def move_snake():
@@ -107,6 +122,8 @@ def move_snake():
         food_pos.pop(food_index) 
         food_stamps.pop(food_index) 
         print("You have eaten the food!")
+        if len(food_stamps) <= 6 :
+                make_food()  
     my_pos= snake.pos()
     x_pos = my_pos[0]
     y_pos = my_pos[1]
@@ -143,7 +160,14 @@ def move_snake():
     elif new_y_pos>=UP_EDGE:
          print("You hit the up edge! Game over!")
          quit()
+    if len(food_stamps) <= 6 :
+        make_food()
+    
+
+
     turtle.ontimer(move_snake,TIME_STEP)
-    move_snake()
+move_snake()
+
+
 
 turtle.mainloop()
