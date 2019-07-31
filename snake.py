@@ -1,5 +1,6 @@
 import turtle
 import random 
+import pygame
 
 turtle.tracer(1,0) 
 
@@ -10,7 +11,7 @@ turtle.setup(SIZE_X, SIZE_Y)
 turtle.penup()
 
 SQUARE_SIZE = 20
-START_LENGTH = 10
+START_LENGTH = 1
 TIME_STEP = 100
 
 
@@ -30,7 +31,7 @@ turtle.hideturtle()
 def new_stamp():
     snake_pos = snake.pos() 
     
-    pos_list.append(snake.pos) 
+    pos_list.append(snake_pos) 
              
     snake_stamp = snake.stamp()
        
@@ -162,12 +163,19 @@ def move_snake():
          quit()
     if len(food_stamps) <= 6 :
         make_food()
-    
-
-
+    if new_pos in pos_list[:-1]:
+        quit()
+    if snake.pos() in food_pos:
+        food_index=food_pos.index(snake.pos()) 
+        food.clearstamp(food_stamps[food_index]) 
+        food_pos.pop(food_index)
+        food_stamps.pop(food_index)
+        pos_list[-1]=pos_list[0]
+        new_stamp()
+        print("You have grown!")
+    turtle.bgcolor('yellow')
     turtle.ontimer(move_snake,TIME_STEP)
 move_snake()
-
 
 
 turtle.mainloop()
